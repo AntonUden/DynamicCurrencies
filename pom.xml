@@ -1,13 +1,29 @@
 <project>
-  <modelVersion>4.0.0</modelVersion>
- 
-  <groupId>net.zeeraa.dynamiccurrencies</groupId>
-  <artifactId>DynamicCurrenciesParent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
 
-  <modules>
-    <module>DynamicCurrencies</module>
-    <module>DynamicCurrenciesAPI</module>
-  </modules>
+	<groupId>net.zeeraa.dynamiccurrencies</groupId>
+	<artifactId>DynamicCurrenciesParent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<build>
+		<plugins>
+		</plugins>
+	</build>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>zeeraas-snapshots</id>
+			<url>https://nexus.zeeraa.net/repository/maven-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>zeeraas-releases</id>
+			<url>https://nexus.zeeraa.net/repository/maven-releases/</url>
+		</repository>
+	</distributionManagement>
+
+	<modules>
+		<module>DynamicCurrencies</module>
+		<module>DynamicCurrenciesAPI</module>
+	</modules>
 </project>

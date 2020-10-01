@@ -90,6 +90,60 @@ public class PlayerEconomyData {
 	}
 
 	/**
+	 * Get the players balance in the primary currency
+	 * <p>
+	 * This is calculated by multiplying {@link Account#getBalance()} with
+	 * {@link Currency#getExchangeRate()} for every account the player has
+	 * 
+	 * @return The players balance
+	 */
+	public double getPrimaryCurrencyBalance() {
+		double balance = 0;
+
+		for (Account account : accounts) {
+			balance += account.getBalance() * account.getCurrency().getExchangeRate();
+		}
+
+		return balance;
+	}
+
+	/**
+	 * Withdraw currency using the exchange rate to the primary currency
+	 * 
+	 * @param amount The amount in primary currency to withdraw
+	 * @return <code>true</code> on success
+	 */
+	public boolean withdraw(double amount) {
+		if (amount >= 0) {
+			if (getPrimaryCurrencyBalance() >= amount) {
+				double withdrawn = 0;
+				for (Account account : accounts) {
+					double toWithdraw = amount - withdrawn;
+
+					if (toWithdraw <= 0) {
+						break;
+					}
+
+					double primaryCurrencyValue = account.getBalance() * account.getCurrency().getExchangeRate();
+
+					if (primaryCurrencyValue < toWithdraw) {
+						toWithdraw = primaryCurrencyValue;
+					}
+
+					account.setBalance(toWithdraw);
+
+					withdrawn += withdrawn;
+				}
+
+				save();
+
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Save the {@link PlayerEconomyData} to a file
 	 * <p>
 	 * This calls {@link PlayerDataManager#savePlayerEconomyData(UUID)} with the

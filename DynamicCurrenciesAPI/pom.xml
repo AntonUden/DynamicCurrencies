@@ -81,15 +81,4 @@
 			<version>3.0.0</version>
 		</dependency>
 	</dependencies>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>zeeraas-snapshots</id>
-			<url>https://nexus.zeeraa.net/repository/maven-snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>zeeraas-releases</id>
-			<url>https://nexus.zeeraa.net/repository/maven-releases/</url>
-		</repository>
-	</distributionManagement>
 </project>
