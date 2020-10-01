@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.zeeraa.dynamiccurrencies.DynamicCurrencies;
-import net.zeeraa.dynamiccurrencies.api.APIImplementation;
 import net.zeeraa.dynamiccurrencies.api.DynamicCurrenciesAPI;
 import net.zeeraa.dynamiccurrencies.api.account.Account;
 import net.zeeraa.dynamiccurrencies.api.currency.Currency;
+import net.zeeraa.dynamiccurrencies.api.implementation.APIImplementation;
 import net.zeeraa.dynamiccurrencies.api.playerdata.PlayerDataManager;
 import net.zeeraa.dynamiccurrencies.api.playerdata.PlayerEconomyData;
 

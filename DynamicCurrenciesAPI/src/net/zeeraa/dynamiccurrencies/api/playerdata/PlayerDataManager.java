@@ -68,7 +68,7 @@ public abstract class PlayerDataManager {
 	/**
 	 * Unload all loaded {@link PlayerEconomyData} instances
 	 * 
-	 * @param Set to <code>true</code> to also call
+	 * @param save Set to <code>true</code> to also call
 	 *            {@link PlayerDataManager#savePlayerEconomyData(UUID)} on the
 	 *            player data
 	 */

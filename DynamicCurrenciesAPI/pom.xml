@@ -52,6 +52,7 @@
 				</executions>
 
 				<configuration>
+					<excludePackageNames>net.zeeraa.dynamiccurrencies.api.implementation</excludePackageNames>
 				</configuration>
 			</plugin>
 		</plugins>

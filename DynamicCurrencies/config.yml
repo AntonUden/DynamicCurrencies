@@ -1,9 +1,28 @@
 # -=-=-= Data files =-=-=-
 # placeholders:
-# {PluginDirectory} The directory where the plugin stores its configuration
+# (PluginDirectory) The directory where the plugin stores its configuration
 
 # The location of the folder to store player data in
-player-data-folder: {PluginDirectory}/playerdata
+player-data-folder: (PluginDirectory)/playerdata
 
 # The location of the currencies.yml file
-currencies-file: {PluginDirectory}/currencies.yml
+currencies-file: (PluginDirectory)/currencies.yml
+
+# -=-=-= Data management =-=-=-
+
+# Load the player data as soon as the player join.
+# This makes it so that the data is avaliable immediately
+# but also keeps the data of all online player in memory
+preload-player-data: true
+
+# Unload the players data when they quit the server.
+# Do not disable this unless you have another plugin that unloads the
+# data for you or the data of all player that have joined will be kept in memory
+unload-data-on-quit: true
+
+# Save the players data when they quit.
+# This will not have any effect if unload-data-on-quit is disabled
+save-data-on-quit: true
+
+# Save data on server shutdown.
+save-data-on-shutdown: true

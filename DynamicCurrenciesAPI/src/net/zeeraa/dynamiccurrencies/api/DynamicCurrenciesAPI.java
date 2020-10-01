@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import net.zeeraa.dynamiccurrencies.api.currency.Currency;
 import net.zeeraa.dynamiccurrencies.api.currency.CurrencyDataManager;
+import net.zeeraa.dynamiccurrencies.api.implementation.APIImplementation;
 import net.zeeraa.dynamiccurrencies.api.playerdata.PlayerDataManager;
 import net.zeeraa.dynamiccurrencies.api.playerdata.PlayerEconomyData;
 
