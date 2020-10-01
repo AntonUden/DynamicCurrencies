@@ -1,0 +1,9 @@
+# -=-=-= Data files =-=-=-
+# placeholders:
+# {PluginDirectory} The directory where the plugin stores its configuration
+
+# The location of the folder to store player data in
+player-data-folder: {PluginDirectory}/playerdata
+
+# The location of the currencies.yml file
+currencies-file: {PluginDirectory}/currencies.yml

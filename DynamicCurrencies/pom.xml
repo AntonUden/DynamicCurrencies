@@ -54,6 +54,19 @@
 		</plugins>
 	</build>
 
+	<repositories>
+		<!-- This adds the Spigot Maven repository to the build -->
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<!--This adds the Spigot API artifact to the build -->
 		<dependency>
@@ -69,6 +82,13 @@
 			<artifactId>DynamicCurrenciesAPI</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.MilkBowl</groupId>
+			<artifactId>VaultAPI</artifactId>
+			<version>1.7</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

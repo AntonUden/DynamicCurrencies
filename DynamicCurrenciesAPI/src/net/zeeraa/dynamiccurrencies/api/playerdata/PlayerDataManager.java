@@ -61,7 +61,18 @@ public abstract class PlayerDataManager {
 	/**
 	 * Unload and save all loaded {@link PlayerEconomyData} instances
 	 */
-	public abstract void unloadAll();
+	public void unloadAll() {
+		unloadAll(true);
+	}
+
+	/**
+	 * Unload all loaded {@link PlayerEconomyData} instances
+	 * 
+	 * @param Set to <code>true</code> to also call
+	 *            {@link PlayerDataManager#savePlayerEconomyData(UUID)} on the
+	 *            player data
+	 */
+	public abstract void unloadAll(boolean save);
 
 	/**
 	 * Get the {@link File} used to store player data files in
