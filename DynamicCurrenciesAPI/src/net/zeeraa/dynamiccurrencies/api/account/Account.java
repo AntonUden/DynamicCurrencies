@@ -1,4 +1,4 @@
-package net.zeeraa.dynamiccurrencies.api.playerdata;
+package net.zeeraa.dynamiccurrencies.api.account;
 
 import net.zeeraa.dynamiccurrencies.api.currency.Currency;
 

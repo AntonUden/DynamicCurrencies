@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.zeeraa.dynamiccurrencies.api.DynamicCurrenciesAPI;
+import net.zeeraa.dynamiccurrencies.api.account.Account;
 import net.zeeraa.dynamiccurrencies.api.currency.Currency;
 
 public class PlayerEconomyData {
