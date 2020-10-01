@@ -26,3 +26,6 @@ save-data-on-quit: true
 
 # Save data on server shutdown.
 save-data-on-shutdown: true
+
+# -=-=-= Other =-=-=-
+print-debug-info: false

@@ -48,6 +48,8 @@ public abstract class CurrencyDataManager {
 	 * <p>
 	 * If there is already currencies loaded it will reload the data and remove
 	 * currencies that no longer exists
+	 * 
+	 * @return <code>false</code> on failure
 	 */
-	public abstract void loadCurrencies();
+	public abstract boolean loadCurrencies();
 }

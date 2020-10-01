@@ -8,10 +8,10 @@ import net.zeeraa.dynamiccurrencies.api.account.Account;
 import net.zeeraa.dynamiccurrencies.api.currency.Currency;
 
 public class PlayerEconomyData {
-	private UUID playerUuid;
-	private Currency primaryCurrency;
+	protected UUID playerUuid;
+	protected Currency primaryCurrency;
 
-	private List<Account> accounts;
+	protected List<Account> accounts;
 
 	public PlayerEconomyData(UUID playerUuid, Currency primaryCurrency, List<Account> accounts) {
 		this.playerUuid = playerUuid;
@@ -59,6 +59,34 @@ public class PlayerEconomyData {
 	 */
 	public List<Account> getAccounts() {
 		return accounts;
+	}
+
+	/**
+	 * Get an account used to store a type of currency
+	 * <p>
+	 * If the player does not have that type of currency the account will be created
+	 * for that player
+	 * 
+	 * @param currency The {@link Currency} to get or create an account for
+	 * @return an account used to store a type of currency
+	 * @throws NullPointerException if the currency is <code>null</code>
+	 */
+	public Account getAccount(Currency currency) {
+		if (currency == null) {
+			throw new NullPointerException("Can't get account for currency: null");
+		}
+
+		for (Account account : accounts) {
+			if (account.getCurrency().equals(currency)) {
+				return account;
+			}
+		}
+
+		Account newAccount = new Account(currency, 0);
+
+		accounts.add(newAccount);
+
+		return newAccount;
 	}
 
 	/**

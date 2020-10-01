@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.zeeraa.dynamiccurrencies.DynamicCurrencies;
@@ -33,8 +31,16 @@ public class DefaultPlayerDataManager extends PlayerDataManager {
 			return loadedPlayerData.get(uuid);
 		}
 
-		if (getPlayerDataFile(uuid).exists()) {
-			YamlConfiguration data = YamlConfiguration.loadConfiguration(getPlayerDataFile(uuid));
+		File playerDataFile = getPlayerDataFile(uuid);
+
+		if (DynamicCurrencies.getInstance().isShowDebugMessages()) {
+			System.out.println("Trying to read player data file at " + playerDataFile.getPath() + " Exists: " + playerDataFile.exists());
+		}
+
+		PlayerEconomyData result;
+
+		if (playerDataFile.exists()) {
+			YamlConfiguration data = YamlConfiguration.loadConfiguration(playerDataFile);
 
 			// Check if the configuration file contains any data
 			if (data.contains("primary-currency-name")) {
@@ -45,13 +51,21 @@ public class DefaultPlayerDataManager extends PlayerDataManager {
 					primaryCurrency = APIImplementation.getCurrencyDataManager().getPrimaryCurrency();
 				}
 
-				List<Account> accounts = data.getMapList("accounts").stream().map(serializedAccount -> Account.deserialize((Map<String, Object>) serializedAccount)).collect(Collectors.toList());
+				List<Account> accounts = (List<Account>) data.getList("accounts");
+				
+				result = new PlayerEconomyData(uuid, primaryCurrency, accounts);
 
-				return new PlayerEconomyData(uuid, primaryCurrency, accounts);
+				loadedPlayerData.put(uuid, result);
+
+				return result;
 			}
 		}
 
-		return new PlayerEconomyData(uuid, DynamicCurrenciesAPI.getPrimaryCurrency(), new ArrayList<>());
+		result = new PlayerEconomyData(uuid, DynamicCurrenciesAPI.getPrimaryCurrency(), new ArrayList<>());
+
+		loadedPlayerData.put(uuid, result);
+
+		return result;
 	}
 
 	@Override

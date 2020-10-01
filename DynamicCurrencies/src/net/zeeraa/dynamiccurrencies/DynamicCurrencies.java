@@ -17,8 +17,8 @@ import net.zeeraa.dynamiccurrencies.api.account.Account;
 import net.zeeraa.dynamiccurrencies.api.implementation.APIImplementation;
 import net.zeeraa.dynamiccurrencies.datamanagers.DefaultCurrencyDataManager;
 import net.zeeraa.dynamiccurrencies.datamanagers.DefaultPlayerDataManager;
-import net.zeeraa.dynamiccurrencies.datamanagers.listener.LoadDataOnJoin;
-import net.zeeraa.dynamiccurrencies.datamanagers.listener.UnloadDataOnQuit;
+import net.zeeraa.dynamiccurrencies.listener.LoadDataOnJoin;
+import net.zeeraa.dynamiccurrencies.listener.UnloadDataOnQuit;
 
 public class DynamicCurrencies extends JavaPlugin {
 	private static DynamicCurrencies instance;
@@ -27,6 +27,8 @@ public class DynamicCurrencies extends JavaPlugin {
 	private File currenciesFile;
 
 	private boolean saveOnShutdown;
+
+	private boolean showDebugMessages;
 
 	public static DynamicCurrencies getInstance() {
 		return instance;
@@ -38,6 +40,10 @@ public class DynamicCurrencies extends JavaPlugin {
 
 	public File getCurrenciesFile() {
 		return currenciesFile;
+	}
+
+	public boolean isShowDebugMessages() {
+		return showDebugMessages;
 	}
 
 	@Override
@@ -74,17 +80,34 @@ public class DynamicCurrencies extends JavaPlugin {
 			return;
 		}
 
+		showDebugMessages = getConfig().getBoolean("print-debug-info");
+
+		if (showDebugMessages) {
+			System.out.println("Debug messages enabled");
+		}
+
 		APIImplementation.setCurrencyDataManager(new DefaultCurrencyDataManager());
 		APIImplementation.setPlayerDataManager(new DefaultPlayerDataManager());
 
-		DynamicCurrenciesAPI.getCurrencyDataManager().loadCurrencies();
+		if (!DynamicCurrenciesAPI.getCurrencyDataManager().loadCurrencies()) {
+			getLogger().severe("Failed to read currencies.yml at: " + currenciesFile.getPath() + ". Check if there is any error above this one");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 
 		if (getConfig().getBoolean("preload-player-data")) {
+			if (showDebugMessages) {
+				System.out.println("Registering LoadDataOnJoin()");
+			}
 			Bukkit.getPluginManager().registerEvents(new LoadDataOnJoin(), this);
 		}
 
 		if (getConfig().getBoolean("unload-data-on-quit")) {
-			Bukkit.getPluginManager().registerEvents(new UnloadDataOnQuit(getConfig().getBoolean("save-data-on-quit")), this);
+			boolean saveOnQuit = getConfig().getBoolean("save-data-on-quit");
+			if (showDebugMessages) {
+				System.out.println("Registering UnloadDataOnQuit() Save on quit: " + saveOnQuit);
+			}
+			Bukkit.getPluginManager().registerEvents(new UnloadDataOnQuit(saveOnQuit), this);
 		}
 
 		saveOnShutdown = getConfig().getBoolean("save-data-on-shutdown");

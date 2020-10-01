@@ -1,4 +1,4 @@
-package net.zeeraa.dynamiccurrencies.datamanagers.listener;
+package net.zeeraa.dynamiccurrencies.listener;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

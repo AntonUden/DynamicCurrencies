@@ -1,12 +1,14 @@
 package net.zeeraa.dynamiccurrencies.api.currency;
 
-public class Currency {
-	private String name;
-	private String displayNameSingular;
-	private String displayNamePlural;
-	private String shortName;
+import net.zeeraa.dynamiccurrencies.api.DynamicCurrenciesAPI;
 
-	private double exchangeRate;
+public class Currency {
+	protected String name;
+	protected String displayNameSingular;
+	protected String displayNamePlural;
+	protected String shortName;
+
+	protected double exchangeRate;
 
 	public Currency(String name, String displayNameSingular, String displayNamePlural, String shortName, double exchangeRate) {
 		this.name = name;
@@ -35,12 +37,34 @@ public class Currency {
 	}
 
 	/**
+	 * Set the new singular display name of the currency
+	 * <p>
+	 * This wont be saved to the currencies.yml file
+	 * 
+	 * @param displayNameSingular The new singular display name
+	 */
+	public void setDisplayNameSingular(String displayNameSingular) {
+		this.displayNameSingular = displayNameSingular;
+	}
+
+	/**
 	 * Get the display name of the currency in plural
 	 * 
 	 * @return The currency display name in plural
 	 */
 	public String getDisplayNamePlural() {
 		return displayNamePlural;
+	}
+
+	/**
+	 * Set the new plural display name of the currency
+	 * <p>
+	 * This wont be saved to the currencies.yml file
+	 * 
+	 * @param displayNamePlural The new plural display name
+	 */
+	public void setDisplayNamePlural(String displayNamePlural) {
+		this.displayNamePlural = displayNamePlural;
 	}
 
 	/**
@@ -53,12 +77,70 @@ public class Currency {
 	}
 
 	/**
+	 * Set the short name for the currency
+	 * <p>
+	 * This wont be saved to the currencies.yml file
+	 * 
+	 * @param shortName The new short name
+	 */
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	/**
 	 * Get the exchange rate to the vault economy
 	 * 
 	 * @return exchange rate
 	 */
 	public double getExchangeRate() {
 		return exchangeRate;
+	}
+
+	/**
+	 * Set the exchange rate of the currency
+	 * <p>
+	 * This will return false if this is the primary currency since the exchange
+	 * rate of the primary currency will always be 1
+	 * <p>
+	 * This wont be saved to the currencies.yml file
+	 * 
+	 * @param exchangeRate The new exchange rate
+	 * @return <code>true</code> on success
+	 */
+	public boolean setExchangeRate(double exchangeRate) {
+		return this.setExchangeRate(exchangeRate, false);
+	}
+
+	/**
+	 * Set the exchange rate of the currency
+	 * <p>
+	 * This will return false if this is the primary currency since the exchange
+	 * rate of the primary currency will always be 1
+	 * <p>
+	 * This wont be saved to the currencies.yml file
+	 * 
+	 * @param exchangeRate The new exchange rate
+	 * @param force        <code>true</code> to force update even if the currency is
+	 *                     the primary currency for the server. Only use this if you
+	 *                     know what you are doing!
+	 * @return <code>true</code> on success
+	 */
+	public boolean setExchangeRate(double exchangeRate, boolean force) {
+		if (isPrimary() || !force) {
+			return false;
+		}
+
+		this.exchangeRate = exchangeRate;
+		return true;
+	}
+
+	/**
+	 * Check if this is the primary currency of the server
+	 * 
+	 * @return <code>true</code> if this is the primary currency
+	 */
+	public boolean isPrimary() {
+		return this.equals(DynamicCurrenciesAPI.getPrimaryCurrency());
 	}
 
 	/**
@@ -84,5 +166,13 @@ public class Currency {
 		}
 
 		return false;
+	}
+	
+	/**
+	 * Get a string with info used to debug currencies
+	 * @return String with debug info
+	 */
+	public String getDebugData() {
+		return "name: " + name + " | displayNameSingular: " + displayNameSingular + " | displayNamePlural: " + displayNamePlural + " | shortName: " + shortName + " | exchangeRate: "  + exchangeRate;
 	}
 }
