@@ -1,0 +1,13 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+ 
+  <groupId>net.zeeraa.dynamiccurrencies</groupId>
+  <artifactId>DynamicCurrenciesParent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>DynamicCurrencies</module>
+    <module>DynamicCurrenciesAPI</module>
+  </modules>
+</project>
