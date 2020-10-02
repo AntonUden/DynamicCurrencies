@@ -58,7 +58,7 @@ public class SCDeposit extends ZSubCommand {
 				playerEconomyData.getAccount(currency).addBalance(amount);
 				playerEconomyData.save();
 
-				sender.sendMessage(ChatColor.GREEN + "Success");
+				sender.sendMessage(ChatColor.GREEN + "Deposited " + amount + " " + currency.getDisplayName(amount));
 				return true;
 			} catch (Exception e) {
 				sender.sendMessage(ChatColor.RED + "Invalid currency amount");
@@ -70,7 +70,6 @@ public class SCDeposit extends ZSubCommand {
 		return false;
 	}
 
-	
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
 		System.out.println(args.length);

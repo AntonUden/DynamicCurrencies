@@ -58,7 +58,7 @@ public class SCSetBalance extends ZSubCommand {
 				playerEconomyData.getAccount(currency).setBalance(amount);
 				playerEconomyData.save();
 
-				sender.sendMessage(ChatColor.GREEN + "Success");
+				sender.sendMessage(ChatColor.GREEN + "Set the balance of " + player.getName() + " to " + amount + " " + currency.getDisplayName(amount));
 				return true;
 			} catch (Exception e) {
 				sender.sendMessage(ChatColor.RED + "Invalid currency amount");

@@ -27,7 +27,6 @@ public class SCInfo extends ZSubCommand {
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
 		sender.sendMessage(ChatColor.GOLD + "-=-= DynamicCurrencies =-=-");
 		sender.sendMessage(ChatColor.GOLD + "Version: " + ChatColor.AQUA + DynamicCurrenciesAPI.getPluginVersion());
-		sender.sendMessage(ChatColor.GOLD + "Authors: " + ChatColor.AQUA + DynamicCurrenciesAPI.getPluginAuthors());
 		
 		return true;
 	}

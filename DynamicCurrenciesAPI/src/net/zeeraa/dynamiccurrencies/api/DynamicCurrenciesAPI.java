@@ -114,23 +114,6 @@ public class DynamicCurrenciesAPI {
 	}
 
 	/**
-	 * Get the a string with the authors
-	 * 
-	 * @return Authors
-	 */
-	public static String getPluginAuthors() {
-		if (APIImplementation.getPlugin() != null) {
-			List<String> authors = APIImplementation.getPlugin().getDescription().getAuthors();
-			String result = "";
-			for (int i = authors.size() - 1; i >= 0; i++) {
-				result += authors.get(i) + (i > 0 ? ", " : "");
-			}
-			return result;
-		}
-		return null;
-	}
-
-	/**
 	 * Get the currency amount to display
 	 * 
 	 * @param amount The real amount

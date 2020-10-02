@@ -21,6 +21,8 @@ public class SCBalance extends ZSubCommand {
 	public SCBalance() {
 		super("balance");
 
+		setAliases(generateAliasList("setbal"));
+		
 		setDescription("Show balance");
 		setPermission("dynamiccurrencies.command.dynamiccurrencies.balance");
 		setPermissionDefaultValue(PermissionDefault.TRUE);
