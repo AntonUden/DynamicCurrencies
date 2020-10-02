@@ -148,8 +148,6 @@ public class DynamicCurrencies extends JavaPlugin {
 			
 			ZCommandRegistrator.registerCommand(this, new DynamicCurrenciesCommand(aliases));
 		}
-		
-		ZCommandRegistrator.registerCommand(this, new TestCMD());
 	}
 
 	@Override
