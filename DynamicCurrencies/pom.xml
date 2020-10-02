@@ -72,7 +72,7 @@
 				<configuration>
 					<skip>true</skip>
 				</configuration>
-			  </plugin>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -81,6 +81,11 @@
 		<repository>
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+
+		<repository>
+			<id>zeeraas-repo</id>
+			<url>https://nexus.zeeraa.net/repository/maven-group/</url>
 		</repository>
 
 		<repository>
@@ -117,6 +122,13 @@
 			<artifactId>VaultAPI</artifactId>
 			<version>1.7</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.zeeraa</groupId>
+			<artifactId>z-command-lib</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

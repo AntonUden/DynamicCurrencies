@@ -34,5 +34,17 @@ save-data-on-shutdown: true
 # data might not be saved
 save-data-on-transaction: true
 
+# -=-=-= Commands =-=-=-
+# Enable the command for the plugin
+enable-dynamic-currencies-command: true
+
+# Aliases for the command
+dynamic-currencies-command-aliases: ['dc']
+
+
 # -=-=-= Other =-=-=-
+# Print debug messages in the console
 print-debug-info: false
+
+# The service priority for vault
+vault-service-priority: 'Normal'

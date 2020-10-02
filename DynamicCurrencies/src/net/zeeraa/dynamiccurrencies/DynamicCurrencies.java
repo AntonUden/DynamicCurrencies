@@ -4,21 +4,27 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.milkbowl.vault.economy.Economy;
 import net.zeeraa.dynamiccurrencies.api.DynamicCurrenciesAPI;
 import net.zeeraa.dynamiccurrencies.api.account.Account;
 import net.zeeraa.dynamiccurrencies.api.implementation.APIImplementation;
+import net.zeeraa.dynamiccurrencies.api.vault.DynamicCurrenciesVault;
+import net.zeeraa.dynamiccurrencies.commands.dynamiccurrencies.DynamicCurrenciesCommand;
 import net.zeeraa.dynamiccurrencies.datamanagers.DefaultCurrencyDataManager;
 import net.zeeraa.dynamiccurrencies.datamanagers.DefaultPlayerDataManager;
 import net.zeeraa.dynamiccurrencies.listener.LoadDataOnJoin;
 import net.zeeraa.dynamiccurrencies.listener.UnloadDataOnQuit;
+import net.zeeraa.zcommandlib.command.registrator.ZCommandRegistrator;
 
 public class DynamicCurrencies extends JavaPlugin {
 	private static DynamicCurrencies instance;
@@ -31,7 +37,7 @@ public class DynamicCurrencies extends JavaPlugin {
 	private boolean showDebugMessages;
 
 	private boolean saveOnTransaction;
-	
+
 	public static DynamicCurrencies getInstance() {
 		return instance;
 	}
@@ -47,7 +53,7 @@ public class DynamicCurrencies extends JavaPlugin {
 	public boolean isShowDebugMessages() {
 		return showDebugMessages;
 	}
-	
+
 	public boolean isSaveOnTransaction() {
 		return saveOnTransaction;
 	}
@@ -88,11 +94,14 @@ public class DynamicCurrencies extends JavaPlugin {
 
 		showDebugMessages = getConfig().getBoolean("print-debug-info");
 		saveOnTransaction = getConfig().getBoolean("save-data-on-transaction");
-		
+		saveOnShutdown = getConfig().getBoolean("save-data-on-shutdown");
+
 		if (showDebugMessages) {
 			System.out.println("Debug messages enabled");
 		}
-
+		
+		APIImplementation.setPlugin(this);
+		APIImplementation.setSaveOnTransaction(saveOnTransaction);
 		APIImplementation.setCurrencyDataManager(new DefaultCurrencyDataManager());
 		APIImplementation.setPlayerDataManager(new DefaultPlayerDataManager());
 
@@ -117,7 +126,30 @@ public class DynamicCurrencies extends JavaPlugin {
 			Bukkit.getPluginManager().registerEvents(new UnloadDataOnQuit(saveOnQuit), this);
 		}
 
-		saveOnShutdown = getConfig().getBoolean("save-data-on-shutdown");
+		ServicePriority servicePriority = null;
+
+		try {
+			servicePriority = ServicePriority.valueOf(getConfig().getString("vault-service-priority"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (servicePriority == null) {
+			getLogger().severe("Invalid service priority " + getConfig().getString("vault-service-priority") + " in config.yml. Valid values can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/plugin/ServicePriority.html");
+			servicePriority = ServicePriority.Normal;
+		}
+
+		Bukkit.getServicesManager().register(Economy.class, new DynamicCurrenciesVault(), this, servicePriority);
+		
+		if(getConfig().getBoolean("enable-dynamic-currencies-command")) {
+			List<String> aliases = getConfig().getStringList("dynamic-currencies-command-aliases");
+			
+			System.out.println(aliases);
+			
+			ZCommandRegistrator.registerCommand(this, new DynamicCurrenciesCommand(aliases));
+		}
+		
+		ZCommandRegistrator.registerCommand(this, new TestCMD());
 	}
 
 	@Override

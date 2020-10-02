@@ -68,6 +68,15 @@ public class Currency {
 	}
 
 	/**
+	 * Get the display name for a certain amount of the currency
+	 * @param amount The amount
+	 * @return the singular or plural display name depending on the amount
+	 */
+	public String getDisplayName(double amount) {
+		return amount == 1 ? getDisplayNameSingular() :getDisplayNamePlural();
+	}
+	
+	/**
 	 * Get the short name of the currency
 	 * 
 	 * @return The short name of the currency
@@ -143,6 +152,18 @@ public class Currency {
 		return this.equals(DynamicCurrenciesAPI.getPrimaryCurrency());
 	}
 
+	/**
+	 * Convert one type of currency to this one
+	 * @param currency The {@link Currency} to convert from
+	 * @param amount The amount to convert
+	 * @return The value of the currency in this currency
+	 */
+	public double convertFromOtherCurrency(Currency currency, double amount) {
+		double rate = currency.getExchangeRate() / exchangeRate;
+		
+		return amount * rate;
+	}
+	
 	/**
 	 * Check if this {@link Currency} is equal to another {@link Currency} or string
 	 * <p>

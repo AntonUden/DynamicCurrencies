@@ -1,5 +1,6 @@
 package net.zeeraa.dynamiccurrencies.api.account;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +56,7 @@ public class Account implements ConfigurationSerializable {
 	/**
 	 * Add balance to the account
 	 * 
-	 * @param amount Balance to add
+	 * @param balance Balance to add
 	 */
 	public void addBalance(double balance) {
 		this.balance += balance;
@@ -85,5 +86,17 @@ public class Account implements ConfigurationSerializable {
 		double balance = NumberConversions.toDouble(serialized.get("balance"));
 
 		return new Account(currency, balance);
+	}
+
+	/**
+	 * Print the balance of the account including the currency name in either
+	 * singular or plural depending on the currency amount
+	 * 
+	 * @return Account balance
+	 */
+	@Override
+	public String toString() {
+		double displayBalance = DynamicCurrenciesAPI.formatCurrency(getBalance());
+		return new DecimalFormat("#.##").format(displayBalance) + " " + currency.getDisplayName(displayBalance);
 	}
 }

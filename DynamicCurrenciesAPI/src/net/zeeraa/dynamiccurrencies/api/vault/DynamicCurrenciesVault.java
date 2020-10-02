@@ -1,4 +1,4 @@
-package net.zeeraa.dynamiccurrencies.vault;
+package net.zeeraa.dynamiccurrencies.api.vault;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -33,11 +33,11 @@ public class DynamicCurrenciesVault implements Economy {
 	public int fractionalDigits() {
 		return -1;
 	}
-
+	
 	@Override
 	public String format(double amount) {
-		DecimalFormat df = new DecimalFormat("#.00");
-		return df.format(amount);
+		DecimalFormat df = new DecimalFormat("#.##");
+		return df.format(DynamicCurrenciesAPI.formatCurrency(amount));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class DynamicCurrenciesVault implements Economy {
 
 	@Override
 	public double getBalance(OfflinePlayer player) {
-		return DynamicCurrenciesAPI.getPlayerEconomyData(player.getUniqueId()).getPrimaryCurrencyBalance();
+		return DynamicCurrenciesAPI.getPlayerEconomyData(player.getUniqueId()).getPrimaryServerCurrencyBalance();
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class DynamicCurrenciesVault implements Economy {
 
 	@Override
 	public boolean has(OfflinePlayer player, double amount) {
-		return DynamicCurrenciesAPI.getPlayerEconomyData(player.getUniqueId()).getPrimaryCurrencyBalance() >= amount;
+		return DynamicCurrenciesAPI.getPlayerEconomyData(player.getUniqueId()).getPrimaryServerCurrencyBalance() >= amount;
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class DynamicCurrenciesVault implements Economy {
 		}
 
 		if (DynamicCurrenciesAPI.getPlayerEconomyData(player).withdraw(amount)) {
-			return new EconomyResponse(amount, DynamicCurrenciesAPI.getPlayerEconomyData(player).getPrimaryCurrencyBalance(), ResponseType.SUCCESS, "");
+			return new EconomyResponse(amount, DynamicCurrenciesAPI.getPlayerEconomyData(player).getPrimaryServerCurrencyBalance(), ResponseType.SUCCESS, "");
 		} else {
 			return new EconomyResponse(0, 0, ResponseType.FAILURE, "Could not withdraw money");
 		}
@@ -133,7 +133,15 @@ public class DynamicCurrenciesVault implements Economy {
 
 	@Override
 	public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
-		return null;
+		if (amount < 0) {
+			return new EconomyResponse(0, 0, ResponseType.FAILURE, "Cant deposit a negative amount");
+		}
+
+		if (DynamicCurrenciesAPI.getPlayerEconomyData(player).depositInPlayersPrimaryCurrency(amount)) {
+			return new EconomyResponse(amount, DynamicCurrenciesAPI.getPlayerEconomyData(player).getPrimaryServerCurrencyBalance(), ResponseType.SUCCESS, "");
+		} else {
+			return new EconomyResponse(0, 0, ResponseType.FAILURE, "Could not deposit money");
+		}
 	}
 
 	@Override

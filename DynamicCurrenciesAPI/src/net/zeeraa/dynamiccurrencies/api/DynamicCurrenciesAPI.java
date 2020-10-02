@@ -1,8 +1,12 @@
 package net.zeeraa.dynamiccurrencies.api;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.Plugin;
+
 import net.zeeraa.dynamiccurrencies.api.currency.Currency;
 import net.zeeraa.dynamiccurrencies.api.currency.CurrencyDataManager;
 import net.zeeraa.dynamiccurrencies.api.implementation.APIImplementation;
@@ -72,5 +76,67 @@ public class DynamicCurrenciesAPI {
 	 */
 	public static boolean isSaveDataOnTransaction() {
 		return APIImplementation.isSaveOnTransaction();
+	}
+
+	/**
+	 * Check if the DynamicCurrencies plugin in enabled
+	 * 
+	 * @return <code>true</code> if DynamicCurrencies is enabled
+	 */
+	public static boolean isEnabled() {
+		Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("DynamicCurrencies");
+
+		if (plugin != null) {
+			return plugin.isEnabled();
+		}
+		return false;
+	}
+
+	/**
+	 * Get an instance of the DynamicCurrencies {@link Plugin}
+	 * 
+	 * @return Plugin instance
+	 */
+	public static Plugin getPlugin() {
+		return APIImplementation.getPlugin();
+	}
+
+	/**
+	 * Get the version of the plugin
+	 * 
+	 * @return Version
+	 */
+	public static String getPluginVersion() {
+		if (APIImplementation.getPlugin() != null) {
+			return APIImplementation.getPlugin().getDescription().getVersion();
+		}
+		return null;
+	}
+
+	/**
+	 * Get the a string with the authors
+	 * 
+	 * @return Authors
+	 */
+	public static String getPluginAuthors() {
+		if (APIImplementation.getPlugin() != null) {
+			List<String> authors = APIImplementation.getPlugin().getDescription().getAuthors();
+			String result = "";
+			for (int i = authors.size() - 1; i >= 0; i++) {
+				result += authors.get(i) + (i > 0 ? ", " : "");
+			}
+			return result;
+		}
+		return null;
+	}
+
+	/**
+	 * Get the currency amount to display
+	 * 
+	 * @param amount The real amount
+	 * @return The amount to display
+	 */
+	public static double formatCurrency(Double amount) {
+		return ((int) (amount * 100)) / 100.00;
 	}
 }

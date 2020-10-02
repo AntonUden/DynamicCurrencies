@@ -48,7 +48,7 @@ public class PlayerEconomyData {
 	 * 
 	 * @param primaryCurrency The new {@link Currency} to use
 	 */
-	public void setPrimaryCurrency(Currency primaryCurrency) {
+	public void setPrimaryPlayerCurrency(Currency primaryCurrency) {
 		this.primaryCurrency = primaryCurrency;
 	}
 
@@ -90,18 +90,33 @@ public class PlayerEconomyData {
 	}
 
 	/**
-	 * Get the players balance in the primary currency
+	 * Get the players balance in the primary currency of the server
 	 * <p>
 	 * This is calculated by multiplying {@link Account#getBalance()} with
 	 * {@link Currency#getExchangeRate()} for every account the player has
 	 * 
 	 * @return The players balance
 	 */
-	public double getPrimaryCurrencyBalance() {
+	public double getPrimaryServerCurrencyBalance() {
 		double balance = 0;
 
 		for (Account account : accounts) {
 			balance += account.getBalance() * account.getCurrency().getExchangeRate();
+		}
+
+		return balance;
+	}
+
+	/**
+	 * Get the players balance in the primary currency of the player
+	 * 
+	 * @return The players balance
+	 */
+	public double getPrimaryPlayerCurrencyBalance() {
+		double balance = 0;
+
+		for (Account account : accounts) {
+			balance += getPrimaryCurrency().convertFromOtherCurrency(account.getCurrency(), account.getBalance());
 		}
 
 		return balance;
@@ -115,7 +130,7 @@ public class PlayerEconomyData {
 	 */
 	public boolean withdraw(double amount) {
 		if (amount >= 0) {
-			if (getPrimaryCurrencyBalance() >= amount) {
+			if (getPrimaryServerCurrencyBalance() >= amount) {
 				double withdrawn = 0;
 				for (Account account : accounts) {
 					double toWithdraw = amount - withdrawn;
