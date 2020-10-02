@@ -63,7 +63,7 @@ public class SCWithdraw extends ZSubCommand {
 				playerEconomyData.getAccount(currency).withdrawBalance(amount);
 				playerEconomyData.save();
 
-				sender.sendMessage(ChatColor.GREEN + "Success");
+				sender.sendMessage(ChatColor.GREEN + "Withdrawn " + amount + " " + currency.getDisplayName(amount));
 				return true;
 			} catch (Exception e) {
 				sender.sendMessage(ChatColor.RED + "Invalid currency amount");
