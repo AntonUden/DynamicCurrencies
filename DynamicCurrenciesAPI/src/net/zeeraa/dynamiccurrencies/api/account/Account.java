@@ -51,21 +51,39 @@ public class Account implements ConfigurationSerializable {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	
+
+	/**
+	 * Add balance to the account
+	 * 
+	 * @param amount Balance to add
+	 */
+	public void addBalance(double balance) {
+		this.balance += balance;
+	}
+
+	/**
+	 * Withdraw balance from the account
+	 * 
+	 * @param balance Balance to withdraw
+	 */
+	public void withdrawBalance(double balance) {
+		this.balance -= balance;
+	}
+
 	@Override
 	public Map<String, Object> serialize() {
 		Map<String, Object> serialized = new HashMap<>();
-        
+
 		serialized.put("currency", getCurrency().getName());
-        serialized.put("balance", getBalance());
-        
-        return serialized;
+		serialized.put("balance", getBalance());
+
+		return serialized;
 	}
 
 	public static Account deserialize(Map<String, Object> serialized) {
 		Currency currency = DynamicCurrenciesAPI.getCurrencyDataManager().getCurrency((String) serialized.get("currency"));
 		double balance = NumberConversions.toDouble(serialized.get("balance"));
-		
-        return new Account(currency, balance);
-    }
+
+		return new Account(currency, balance);
+	}
 }

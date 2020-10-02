@@ -27,5 +27,12 @@ save-data-on-quit: true
 # Save data on server shutdown.
 save-data-on-shutdown: true
 
+# Save data on transaction
+# If disabled the players data wont be written
+# on every transaction. This will cause lower disk IO
+# but if the server crashes or loses power the player
+# data might not be saved
+save-data-on-transaction: true
+
 # -=-=-= Other =-=-=-
 print-debug-info: false

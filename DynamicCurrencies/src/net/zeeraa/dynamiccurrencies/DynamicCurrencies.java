@@ -30,6 +30,8 @@ public class DynamicCurrencies extends JavaPlugin {
 
 	private boolean showDebugMessages;
 
+	private boolean saveOnTransaction;
+	
 	public static DynamicCurrencies getInstance() {
 		return instance;
 	}
@@ -44,6 +46,10 @@ public class DynamicCurrencies extends JavaPlugin {
 
 	public boolean isShowDebugMessages() {
 		return showDebugMessages;
+	}
+	
+	public boolean isSaveOnTransaction() {
+		return saveOnTransaction;
 	}
 
 	@Override
@@ -81,7 +87,8 @@ public class DynamicCurrencies extends JavaPlugin {
 		}
 
 		showDebugMessages = getConfig().getBoolean("print-debug-info");
-
+		saveOnTransaction = getConfig().getBoolean("save-data-on-transaction");
+		
 		if (showDebugMessages) {
 			System.out.println("Debug messages enabled");
 		}

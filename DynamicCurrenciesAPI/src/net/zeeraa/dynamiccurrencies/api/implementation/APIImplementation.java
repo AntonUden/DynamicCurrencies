@@ -6,6 +6,7 @@ import net.zeeraa.dynamiccurrencies.api.playerdata.PlayerDataManager;
 public class APIImplementation {
 	private static PlayerDataManager playerDataManager;
 	private static CurrencyDataManager currencyDataManager;
+	private static boolean saveOnTransaction;
 	
 	public static PlayerDataManager getPlayerDataManager() {
 		return playerDataManager;
@@ -21,5 +22,13 @@ public class APIImplementation {
 	
 	public static void setCurrencyDataManager(CurrencyDataManager currencyDataManager) {
 		APIImplementation.currencyDataManager = currencyDataManager;
+	}
+	
+	public static boolean isSaveOnTransaction() {
+		return saveOnTransaction;
+	}
+	
+	public static void setSaveOnTransaction(boolean saveOnTransaction) {
+		APIImplementation.saveOnTransaction = saveOnTransaction;
 	}
 }

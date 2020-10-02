@@ -130,17 +130,40 @@ public class PlayerEconomyData {
 						toWithdraw = primaryCurrencyValue;
 					}
 
-					account.setBalance(toWithdraw);
+					account.withdrawBalance(toWithdraw);
 
-					withdrawn += withdrawn;
+					withdrawn += toWithdraw;
 				}
 
-				save();
+				if (DynamicCurrenciesAPI.isSaveDataOnTransaction()) {
+					save();
+				}
 
 				return true;
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Add balance in the players primary currency
+	 * 
+	 * @param amount The mount to add
+	 * @return <code>true</code> on success, <code>false</code> if amount is a
+	 *         negative number
+	 */
+	public boolean depositInPlayersPrimaryCurrency(double amount) {
+		if (amount < 0) {
+			return false;
+		}
+
+		getAccount(getPrimaryCurrency()).addBalance(amount);
+
+		if (DynamicCurrenciesAPI.isSaveDataOnTransaction()) {
+			save();
+		}
+
+		return true;
 	}
 
 	/**

@@ -2,8 +2,7 @@ package net.zeeraa.dynamiccurrencies.api;
 
 import java.util.UUID;
 
-import org.bukkit.entity.Player;
-
+import org.bukkit.OfflinePlayer;
 import net.zeeraa.dynamiccurrencies.api.currency.Currency;
 import net.zeeraa.dynamiccurrencies.api.currency.CurrencyDataManager;
 import net.zeeraa.dynamiccurrencies.api.implementation.APIImplementation;
@@ -31,22 +30,23 @@ public class DynamicCurrenciesAPI {
 
 	/**
 	 * Get the instance of the {@link CurrencyDataManager} used
+	 * 
 	 * @return The {@link CurrencyDataManager}
 	 */
 	public static CurrencyDataManager getCurrencyDataManager() {
 		return APIImplementation.getCurrencyDataManager();
 	}
-	
+
 	/**
-	 * Get the {@link PlayerEconomyData} of a {@link Player}
+	 * Get the {@link PlayerEconomyData} of a {@link OfflinePlayer}
 	 * <p>
 	 * See {@link PlayerDataManager#getPlayerEconomyData(UUID)} for more info about
 	 * the behavior of this function
 	 * 
-	 * @param player The {@link Player} to get the data for
+	 * @param player The {@link OfflinePlayer} to get the data for
 	 * @return The {@link PlayerEconomyData} for the player
 	 */
-	public static PlayerEconomyData getPlayerEconomyData(Player player) {
+	public static PlayerEconomyData getPlayerEconomyData(OfflinePlayer player) {
 		return getPlayerEconomyData(player.getUniqueId());
 	}
 
@@ -61,5 +61,16 @@ public class DynamicCurrenciesAPI {
 	 */
 	public static PlayerEconomyData getPlayerEconomyData(UUID uuid) {
 		return getPlayerDataManager().getPlayerEconomyData(uuid);
+	}
+
+	/**
+	 * Check if the player data should be saved on every transaction
+	 * <p>
+	 * Causes higher disk IO but also prevents data loss on crashes or power loss
+	 * 
+	 * @return <code>true</code> if player data should be saved on transaction
+	 */
+	public static boolean isSaveDataOnTransaction() {
+		return APIImplementation.isSaveOnTransaction();
 	}
 }
