@@ -1,6 +1,5 @@
 package net.zeeraa.dynamiccurrencies.api;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -21,6 +20,36 @@ public class DynamicCurrenciesAPI {
 	 */
 	public static Currency getPrimaryCurrency() {
 		return APIImplementation.getCurrencyDataManager().getPrimaryCurrency();
+	}
+
+	/**
+	 * Check if a player has an account
+	 * 
+	 * @param uuid The {@link UUID} of the player
+	 * @return <code>true</code> if the player has an account
+	 */
+	public static boolean hasAccount(UUID uuid) {
+		return APIImplementation.hasAccount(uuid);
+	}
+
+	/**
+	 * Check if an account can be created for the player.
+	 * 
+	 * @param uuid {@link UUID} of the player
+	 * @return <code>true</code> if an account can be created for the player
+	 */
+	public static boolean canCreateAccount(UUID uuid) {
+		return APIImplementation.canCreateAccount(uuid);
+	}
+
+	/**
+	 * Try to create an account for a player
+	 * 
+	 * @param uuid {@link UUID} of the player
+	 * @return <code>true</code> if an account was created
+	 */
+	public static boolean createAccount(UUID uuid) {
+		return APIImplementation.createAccount(uuid);
 	}
 
 	/**

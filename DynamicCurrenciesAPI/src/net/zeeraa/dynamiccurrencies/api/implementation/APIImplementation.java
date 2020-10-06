@@ -1,5 +1,7 @@
 package net.zeeraa.dynamiccurrencies.api.implementation;
 
+import java.util.UUID;
+
 import org.bukkit.plugin.Plugin;
 
 import net.zeeraa.dynamiccurrencies.api.currency.CurrencyDataManager;
@@ -12,7 +14,7 @@ public class APIImplementation {
 	private static Plugin plugin;
 	
 	public static PlayerDataManager getPlayerDataManager() {
-		return playerDataManager;
+		return APIImplementation.playerDataManager;
 	}
 	
 	public static void setPlayerDataManager(PlayerDataManager playerDataManager) {
@@ -20,7 +22,7 @@ public class APIImplementation {
 	}
 	
 	public static CurrencyDataManager getCurrencyDataManager() {
-		return currencyDataManager;
+		return APIImplementation.currencyDataManager;
 	}
 	
 	public static void setCurrencyDataManager(CurrencyDataManager currencyDataManager) {
@@ -28,7 +30,7 @@ public class APIImplementation {
 	}
 	
 	public static boolean isSaveOnTransaction() {
-		return saveOnTransaction;
+		return APIImplementation.saveOnTransaction;
 	}
 	
 	public static void setSaveOnTransaction(boolean saveOnTransaction) {
@@ -36,10 +38,22 @@ public class APIImplementation {
 	}
 	
 	public static Plugin getPlugin() {
-		return plugin;
+		return APIImplementation.plugin;
 	}
 	
 	public static void setPlugin(Plugin plugin) {
 		APIImplementation.plugin = plugin;
+	}
+
+	public static boolean hasAccount(UUID uuid) {
+		return APIImplementation.playerDataManager.hasAccount(uuid);
+	}
+
+	public static boolean canCreateAccount(UUID uuid) {
+		return APIImplementation.playerDataManager.canCreateAccount(uuid);
+	}
+	
+	public static boolean createAccount(UUID uuid) {
+		return APIImplementation.playerDataManager.hasAccount(uuid);
 	}
 }

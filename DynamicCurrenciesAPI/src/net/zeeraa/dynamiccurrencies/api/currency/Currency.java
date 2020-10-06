@@ -38,8 +38,7 @@ public class Currency {
 
 	/**
 	 * Set the new singular display name of the currency
-	 * <p>
-	 * This wont be saved to the currencies.yml file
+	 * 
 	 * 
 	 * @param displayNameSingular The new singular display name
 	 */
@@ -58,8 +57,7 @@ public class Currency {
 
 	/**
 	 * Set the new plural display name of the currency
-	 * <p>
-	 * This wont be saved to the currencies.yml file
+	 * 
 	 * 
 	 * @param displayNamePlural The new plural display name
 	 */
@@ -69,13 +67,14 @@ public class Currency {
 
 	/**
 	 * Get the display name for a certain amount of the currency
+	 * 
 	 * @param amount The amount
 	 * @return the singular or plural display name depending on the amount
 	 */
 	public String getDisplayName(double amount) {
-		return amount == 1 ? getDisplayNameSingular() :getDisplayNamePlural();
+		return amount == 1 ? getDisplayNameSingular() : getDisplayNamePlural();
 	}
-	
+
 	/**
 	 * Get the short name of the currency
 	 * 
@@ -110,8 +109,6 @@ public class Currency {
 	 * <p>
 	 * This will return false if this is the primary currency since the exchange
 	 * rate of the primary currency will always be 1
-	 * <p>
-	 * This wont be saved to the currencies.yml file
 	 * 
 	 * @param exchangeRate The new exchange rate
 	 * @return <code>true</code> on success
@@ -125,8 +122,7 @@ public class Currency {
 	 * <p>
 	 * This will return false if this is the primary currency since the exchange
 	 * rate of the primary currency will always be 1
-	 * <p>
-	 * This wont be saved to the currencies.yml file
+	 * 
 	 * 
 	 * @param exchangeRate The new exchange rate
 	 * @param force        <code>true</code> to force update even if the currency is
@@ -154,16 +150,17 @@ public class Currency {
 
 	/**
 	 * Convert one type of currency to this one
+	 * 
 	 * @param currency The {@link Currency} to convert from
-	 * @param amount The amount to convert
+	 * @param amount   The amount to convert
 	 * @return The value of the currency in this currency
 	 */
 	public double convertFromOtherCurrency(Currency currency, double amount) {
 		double rate = currency.getExchangeRate() / exchangeRate;
-		
+
 		return amount * rate;
 	}
-	
+
 	/**
 	 * Check if this {@link Currency} is equal to another {@link Currency} or string
 	 * <p>
@@ -188,12 +185,13 @@ public class Currency {
 
 		return false;
 	}
-	
+
 	/**
 	 * Get a string with info used to debug currencies
+	 * 
 	 * @return String with debug info
 	 */
 	public String getDebugData() {
-		return "name: " + name + " | displayNameSingular: " + displayNameSingular + " | displayNamePlural: " + displayNamePlural + " | shortName: " + shortName + " | exchangeRate: "  + exchangeRate;
+		return "name: " + name + " | displayNameSingular: " + displayNameSingular + " | displayNamePlural: " + displayNamePlural + " | shortName: " + shortName + " | exchangeRate: " + exchangeRate;
 	}
 }

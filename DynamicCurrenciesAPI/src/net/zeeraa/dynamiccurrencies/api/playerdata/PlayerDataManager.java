@@ -69,8 +69,8 @@ public abstract class PlayerDataManager {
 	 * Unload all loaded {@link PlayerEconomyData} instances
 	 * 
 	 * @param save Set to <code>true</code> to also call
-	 *            {@link PlayerDataManager#savePlayerEconomyData(UUID)} on the
-	 *            player data
+	 *             {@link PlayerDataManager#savePlayerEconomyData(UUID)} on the
+	 *             player data
 	 */
 	public abstract void unloadAll(boolean save);
 
@@ -91,4 +91,44 @@ public abstract class PlayerDataManager {
 	 *         this file may not exist
 	 */
 	public abstract File getPlayerDataFile(UUID uuid);
+
+	/**
+	 * Check if a player has an account
+	 * 
+	 * @param uuid The {@link UUID} of the player
+	 * @return <code>true</code> if the player has an account
+	 */
+	public abstract boolean hasAccount(UUID uuid);
+
+	/**
+	 * Check if an account can be created for the player.
+	 * 
+	 * @param uuid {@link UUID} of the player
+	 * @return <code>true</code> if an account can be created for the player
+	 */
+	public abstract boolean canCreateAccount(UUID uuid);
+
+	/**
+	 * Try to create an account for a player
+	 * 
+	 * @param uuid {@link UUID} of the player
+	 * @return <code>true</code> if an account was created
+	 */
+	public abstract boolean createAccount(UUID uuid);
+
+	/**
+	 * Clean the cached data of any player data that does not have an online player
+	 * <p>
+	 * This will also save that data
+	 */
+	public void clearCache() {
+		this.clearCache(true);
+	}
+
+	/**
+	 * Clean the cached data of any player data that does not have an online player
+	 * 
+	 * @param save <code>true</code> to save the cached data on removal
+	 */
+	public abstract void clearCache(boolean save);
 }

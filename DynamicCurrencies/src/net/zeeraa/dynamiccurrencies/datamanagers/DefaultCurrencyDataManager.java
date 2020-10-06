@@ -109,4 +109,10 @@ public class DefaultCurrencyDataManager extends CurrencyDataManager {
 
 		return true;
 	}
+
+	@Override
+	public boolean saveCurrencies() {
+		//TODO: 
+		return false;
+	}
 }

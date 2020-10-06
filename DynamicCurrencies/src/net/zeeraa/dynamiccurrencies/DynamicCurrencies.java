@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -13,6 +15,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import net.milkbowl.vault.economy.Economy;
 import net.zeeraa.dynamiccurrencies.api.DynamicCurrenciesAPI;
@@ -38,6 +42,11 @@ public class DynamicCurrencies extends JavaPlugin {
 
 	private boolean saveOnTransaction;
 
+	private boolean vaultIntegrationAdded;
+	private boolean dynamicCurrenciesCommandAdded;
+
+	private BukkitTask clearCacheTask;
+
 	public static DynamicCurrencies getInstance() {
 		return instance;
 	}
@@ -58,10 +67,27 @@ public class DynamicCurrencies extends JavaPlugin {
 		return saveOnTransaction;
 	}
 
+	public boolean isVaultIntegrationAdded() {
+		return vaultIntegrationAdded;
+	}
+
+	public boolean isDynamicCurrenciesCommandAdded() {
+		return dynamicCurrenciesCommandAdded;
+	}
+
+	@Nullable
+	public BukkitTask getClearCacheTask() {
+		return clearCacheTask;
+	}
+
 	@Override
 	public void onEnable() {
 		DynamicCurrencies.instance = this;
 		saveOnShutdown = false;
+		vaultIntegrationAdded = false;
+		dynamicCurrenciesCommandAdded = false;
+
+		clearCacheTask = null;
 
 		ConfigurationSerialization.registerClass(Account.class);
 
@@ -99,7 +125,7 @@ public class DynamicCurrencies extends JavaPlugin {
 		if (showDebugMessages) {
 			System.out.println("Debug messages enabled");
 		}
-		
+
 		APIImplementation.setPlugin(this);
 		APIImplementation.setSaveOnTransaction(saveOnTransaction);
 		APIImplementation.setCurrencyDataManager(new DefaultCurrencyDataManager());
@@ -126,32 +152,47 @@ public class DynamicCurrencies extends JavaPlugin {
 			Bukkit.getPluginManager().registerEvents(new UnloadDataOnQuit(saveOnQuit), this);
 		}
 
-		ServicePriority servicePriority = null;
+		if (getConfig().getBoolean("enable-vault-integratio")) {
+			ServicePriority servicePriority = null;
 
-		try {
-			servicePriority = ServicePriority.valueOf(getConfig().getString("vault-service-priority"));
-		} catch (Exception e) {
-			e.printStackTrace();
+			try {
+				servicePriority = ServicePriority.valueOf(getConfig().getString("vault-service-priority"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (servicePriority == null) {
+				getLogger().severe("Invalid service priority " + getConfig().getString("vault-service-priority") + " in config.yml. Valid values can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/plugin/ServicePriority.html");
+				servicePriority = ServicePriority.Normal;
+			}
+
+			Bukkit.getServicesManager().register(Economy.class, new DynamicCurrenciesVault(), this, servicePriority);
+			vaultIntegrationAdded = true;
 		}
 
-		if (servicePriority == null) {
-			getLogger().severe("Invalid service priority " + getConfig().getString("vault-service-priority") + " in config.yml. Valid values can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/plugin/ServicePriority.html");
-			servicePriority = ServicePriority.Normal;
-		}
-
-		Bukkit.getServicesManager().register(Economy.class, new DynamicCurrenciesVault(), this, servicePriority);
-		
-		if(getConfig().getBoolean("enable-dynamic-currencies-command")) {
+		if (getConfig().getBoolean("enable-dynamic-currencies-command")) {
 			List<String> aliases = getConfig().getStringList("dynamic-currencies-command-aliases");
-			
+
 			System.out.println(aliases);
-			
+
 			ZCommandRegistrator.registerCommand(this, new DynamicCurrenciesCommand(aliases));
+			dynamicCurrenciesCommandAdded = true;
+		}
+
+		long clearCacheDelay = getConfig().getLong("clear-cache-delay");
+		if (clearCacheDelay > 0) {
+			clearCacheTask = new BukkitRunnable() {
+				@Override
+				public void run() {
+					DynamicCurrenciesAPI.getPlayerDataManager().clearCache(true);
+				}
+			}.runTaskTimer(this, clearCacheDelay, clearCacheDelay);
 		}
 	}
 
 	@Override
 	public void onDisable() {
+		Bukkit.getScheduler().cancelTasks(this);
 		HandlerList.unregisterAll((Plugin) this);
 		DynamicCurrenciesAPI.getPlayerDataManager().unloadAll(saveOnShutdown);
 	}

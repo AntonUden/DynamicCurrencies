@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import net.zeeraa.dynamiccurrencies.DynamicCurrencies;
 import net.zeeraa.dynamiccurrencies.api.DynamicCurrenciesAPI;
@@ -52,7 +55,7 @@ public class DefaultPlayerDataManager extends PlayerDataManager {
 				}
 
 				List<Account> accounts = (List<Account>) data.getList("accounts");
-				
+
 				result = new PlayerEconomyData(uuid, primaryCurrency, accounts);
 
 				loadedPlayerData.put(uuid, result);
@@ -117,5 +120,42 @@ public class DefaultPlayerDataManager extends PlayerDataManager {
 	@Override
 	public File getPlayerDataFile(UUID uuid) {
 		return new File(getPlayerDataFolder().getPath() + File.separator + uuid.toString() + ".yml");
+	}
+
+	@Override
+	public boolean hasAccount(UUID uuid) {
+		return getPlayerDataFile(uuid).exists() || loadedPlayerData.containsKey(uuid);
+	}
+
+	@Override
+	public boolean canCreateAccount(UUID uuid) {
+		return true;
+	}
+
+	@Override
+	public boolean createAccount(UUID uuid) {
+		getPlayerEconomyData(uuid).save();
+		return true;
+	}
+
+	@Override
+	public void clearCache(boolean save) {
+		List<UUID> toBeRemoved = new ArrayList<UUID>();
+		
+		for(UUID uuid : loadedPlayerData.keySet()) {
+			Player player = Bukkit.getServer().getPlayer(uuid);
+			
+			if(player != null) {
+				if(player.isOnline()) {
+					continue;
+				}
+			}
+			
+			toBeRemoved.add(uuid);
+		}
+		
+		for(UUID uuid : toBeRemoved) {
+			unloadPlayerEconomyData(uuid, save);
+		}
 	}
 }

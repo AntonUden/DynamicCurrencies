@@ -41,10 +41,17 @@ enable-dynamic-currencies-command: true
 # Aliases for the command
 dynamic-currencies-command-aliases: ['dc']
 
+# -=-=-= Cache =-=-=-
+# Delay in ticks to clear the player data cache. Set to 0 to disable
+# The default is 6000 which is equivalent to 5 minutes
+clear-cache-delay: 6000
 
 # -=-=-= Other =-=-=-
 # Print debug messages in the console
 print-debug-info: false
+
+# True to enable the built in vault integration
+enable-vault-integration: true
 
 # The service priority for vault
 vault-service-priority: 'Normal'

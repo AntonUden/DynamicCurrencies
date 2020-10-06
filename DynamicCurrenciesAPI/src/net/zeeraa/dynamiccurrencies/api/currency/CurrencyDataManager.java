@@ -52,4 +52,14 @@ public abstract class CurrencyDataManager {
 	 * @return <code>false</code> on failure
 	 */
 	public abstract boolean loadCurrencies();
+
+	/**
+	 * Save any modifications to the loaded currencies
+	 * <p>
+	 * Any changes in currencies.yml made after loading the currencies will be
+	 * overwritten
+	 * 
+	 * @return <code>false</code> on failure
+	 */
+	public abstract boolean saveCurrencies();
 }

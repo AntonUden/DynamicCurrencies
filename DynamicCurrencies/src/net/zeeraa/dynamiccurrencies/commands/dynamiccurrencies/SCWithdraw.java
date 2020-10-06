@@ -53,6 +53,11 @@ public class SCWithdraw extends ZSubCommand {
 					return false;
 				}
 
+				if (!DynamicCurrenciesAPI.hasAccount(player.getUniqueId())) {
+					sender.sendMessage(ChatColor.RED + "That player does not have an account");
+					return false;
+				}
+
 				PlayerEconomyData playerEconomyData = DynamicCurrenciesAPI.getPlayerEconomyData(player.getUniqueId());
 
 				if (amount > playerEconomyData.getAccount(currency).getBalance()) {

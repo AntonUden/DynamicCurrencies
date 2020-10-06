@@ -52,7 +52,19 @@ public class SCSetBalance extends ZSubCommand {
 					sender.sendMessage(ChatColor.RED + "Cant set a negative mount");
 					return false;
 				}
-
+				
+				if (!DynamicCurrenciesAPI.hasAccount(player.getUniqueId())) {
+					if(!DynamicCurrenciesAPI.canCreateAccount(player.getUniqueId())) {
+						sender.sendMessage(ChatColor.RED + "That player does not have an account");
+						return false;
+					}
+					
+					if(!DynamicCurrenciesAPI.createAccount(player.getUniqueId())) {
+						sender.sendMessage(ChatColor.RED + "Cant create an account for that player");
+						return false;
+					}
+				}
+				
 				PlayerEconomyData playerEconomyData = DynamicCurrenciesAPI.getPlayerEconomyData(player.getUniqueId());
 
 				playerEconomyData.getAccount(currency).setBalance(amount);
